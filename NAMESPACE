@@ -8,7 +8,8 @@ import(GenomeInfoDb)
 import(GenomicRanges)
 
 export(
-  makeGRangesFromPyRanges,
-  makePyRangesFromGRanges
+  pandas, pyranges,
+  makePyRangesFromGRanges,
+  makeGRangesFromPyRanges
 )
 

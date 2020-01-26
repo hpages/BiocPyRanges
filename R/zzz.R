@@ -1,10 +1,41 @@
-# Global reference to pandas (will be initialized in .onLoad).
+# Global references to pandas and pyranges (will be initialized in .onLoad).
 pandas <- NULL
 pyranges <- NULL
 
-.onLoad <- function(libname, pkgname) {
-  pandas <<- reticulate::import("pandas", delay_load=TRUE)
-  pyranges <<- reticulate::import("pyranges", delay_load=TRUE)
+.onLoad <- function(libname, pkgname)
+{
+    pandas <<- reticulate::import("pandas", delay_load=TRUE)
+    pyranges <<- reticulate::import("pyranges", delay_load=TRUE)
+}
+
+.make_PyRanges_data_frame_from_GRanges <- function(gr)
+{
+    stopifnot(is(gr, "GenomicRanges"))
+
+    ## Core fields: Chromosome, Start, End
+    ## PyRanges objects follow the 0-based start convention!
+    df <- data.frame(Chromosome=as.factor(seqnames(gr)),
+                     Start=start(gr) - 1L,
+                     End=end(gr),
+                     stringsAsFactors=FALSE)
+
+    ## "Strand" field.
+    gr_strand <- strand(gr)
+    if (length(runValue(gr_strand)) != 1L ||
+	as.character(runValue(gr_strand)) != "*" )
+        df <- cbind(df, Strand=as.factor(gr_strand), stringsAsFactors=FALSE)
+
+    ## "Name" field.
+    gr_names <- names(gr)
+    if (!is.null(gr_names))
+        df <- cbind(df, Name=gr_names, stringsAsFactors=FALSE)
+
+    ## Metadata columns.
+    gr_mcols <- mcols(gr)
+    if (!is.null(gr_mcols))
+        df <- cbind(df, gr_mcols, stringsAsFactors=FALSE)
+
+    df
 }
 
 .make_GRanges_from_PyRanges_data_frame <- function(df)
@@ -29,69 +60,70 @@ pyranges <- NULL
     }
     used_idx <- core_idx
 
-    ans_seqnames <- df[[core_idx[[1L]]]]
+    gr_seqnames <- df[[core_idx[[1L]]]]
     ## PyRanges objects follow the 0-based start convention!
-    ans_start <- df[[core_idx[[2L]]]] + 1L
-    ans_end <- df[[core_idx[[3L]]]]
+    gr_start <- df[[core_idx[[2L]]]] + 1L
+    gr_end <- df[[core_idx[[3L]]]]
 
     ## "Strand" field.
     strand_idx <- match("Strand", df_colnames)
     if (is.na(strand_idx)) {
-        ans_strand <- Rle(strand("*"), nrow(df))
+        gr_strand <- Rle(strand("*"), nrow(df))
     } else {
-        ans_strand <- df[[strand_idx]]
+        gr_strand <- df[[strand_idx]]
         used_idx <- c(used_idx, strand_idx)
     }
 
     ## "Name" field.
     names_idx <- match("Name", df_colnames)
     if (is.na(names_idx)) {
-        ans_names <- NULL
+        gr_names <- NULL
     } else {
-        ans_names <- df[[names_idx]]
+        gr_names <- df[[names_idx]]
         used_idx <- c(used_idx, names_idx)
     }
 
     ## Metadata columns.
-    ans_mcols <- df[ , -used_idx, drop=FALSE]
+    gr_mcols <- df[ , -used_idx, drop=FALSE]
 
-    GRanges(ans_seqnames,
-            IRanges(ans_start, ans_end, names=ans_names),
-            ans_strand,
-            ans_mcols)
+    GRanges(gr_seqnames,
+            IRanges(gr_start, gr_end, names=gr_names),
+            gr_strand,
+            gr_mcols)
 }
 
-makeGRangesFromPyRanges <- function(x)
+makePyRangesFromGRanges <- function(gr)
 {
-    stopifnot(inherits(x, "pyranges.pyranges.PyRanges"))
+    df <- .make_PyRanges_data_frame_from_GRanges(gr)
+    pyranges$PyRanges(df)
+}
 
-    df <- x$as_df()
+makeGRangesFromPyRanges <- function(pyr)
+{
+    stopifnot(inherits(pyr, "pyranges.pyranges.PyRanges"))
 
-    ## Not safe to use at the moment e.g. will error (with "cannnot determine
-    ## seqnames column unambiguously") if 'df' has columns "Chromosome"
-    ## and "chromosome".
-    #ans <- makeGRangesFromDataFrame(df,
-    #                                seqnames.field="Chromosome",
-    #                                start.field="Start",
-    #                                end.field="End",
-    #                                strand.field="Strand",
-    #                                keep.extra.columns=TRUE,
-    #                                starts.in.df.are.0based=TRUE)
-    #ans_mcols <- mcols(ans)
-    #if (!is.null(ans_mcols)) {
-    #    idx <- match("Name", colnames(ans_mcols))
+    df <- pyr$as_df()
+
+    ## Not safe to use makeGRangesFromDataFrame() at the moment e.g. it
+    ## will error (with "cannnot determine seqnames column unambiguously")
+    ## if 'df' has columns "Chromosome" and "chromosome".
+    #gr <- makeGRangesFromDataFrame(df,
+    #                               seqnames.field="Chromosome",
+    #                               start.field="Start",
+    #                               end.field="End",
+    #                               strand.field="Strand",
+    #                               keep.extra.columns=TRUE,
+    #                               starts.in.df.are.0based=TRUE)
+    #gr_mcols <- mcols(gr)
+    #if (!is.null(gr_mcols)) {
+    #    idx <- match("Name", colnames(gr_mcols))
     #    if (!is.na(idx)) {
-    #        names(ans) <- ans_mcols[[idx]]
-    #        mcols(ans) <- ans_mcols[-idx]
+    #        names(gr) <- gr_mcols[[idx]]
+    #        mcols(gr) <- gr_mcols[-idx]
     #    }
     #}
-    #ans
+    #gr
 
     .make_GRanges_from_PyRanges_data_frame(df)
-}
-
-makePyRangesFromGRanges <- function(x)
-{
-    stopifnot(is(x, "GRanges"))
 }
 

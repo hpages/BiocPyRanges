@@ -1,7 +1,7 @@
 Package: BiocPyRanges
 Title: Conveniently access PyRanges functionalities from Bioconductor
-Description: Provides utilities to switch back and forth between PyRanges
-	and GRanges objects.
+Description: Provides utilities to switch back and forth between GRanges
+	and PyRanges objects.
 Version: 0.0.1
 Encoding: UTF-8
 Author: Hervé Pagès <hpages@fredhutch.org>
