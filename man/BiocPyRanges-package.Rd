@@ -48,6 +48,8 @@ install_pyranges(method="auto", conda="auto")
 \references{
   PyRanges: \url{https://github.com/biocore-NTNU/pyranges}
 
+  PyRanges' documentation: \url{https://biocore-NTNU.github.io/pyranges/}
+
   reticulate: \url{https://cran.r-project.org/web/packages/reticulate/}
 }
 
