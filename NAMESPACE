@@ -7,9 +7,32 @@ import(IRanges)
 import(GenomeInfoDb)
 import(GenomicRanges)
 
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+### Export S3 methods
+###
+
+#S3method(r_to_py, GenomicRanges)
+#S3method(py_to_r, pyranges.pyranges.PyRanges)
+
+### We also export them thru the export() directive so that (a) they can be
+### called directly, (b) tab-completion on the name of the generic shows them,
+### and (c) methods() doesn't asterisk them.
+
 export(
-  pandas, pyranges,
-  makePyRangesFromGRanges,
-  makeGRangesFromPyRanges
+    #r_to_py.GenomicRanges,
+    #py_to_r.pyranges.pyranges.PyRanges
+)
+
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+### Other exports
+###
+
+export(
+    install_pandas, install_pyranges,
+    pandas, pyranges,
+    makePyRangesFromGRanges,
+    makeGRangesFromPyRanges
 )
 

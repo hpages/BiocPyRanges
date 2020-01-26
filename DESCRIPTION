@@ -1,7 +1,7 @@
 Package: BiocPyRanges
 Title: Conveniently access PyRanges functionalities from Bioconductor
-Description: Provides utilities to switch back and forth between GRanges
-	and PyRanges objects.
+Description: Provides utilities for converting between GRanges and
+	PyRanges objects.
 Version: 0.0.1
 Encoding: UTF-8
 Author: Hervé Pagès <hpages@fredhutch.org>
@@ -9,6 +9,7 @@ Maintainer: Hervé Pagès <hpages@fredhutch.org>
 License: Artistic-2.0
 biocViews: Genetics, Infrastructure, DataRepresentation,
 	Annotation, GenomeAnnotation, Coverage
-Depends: R (>= 3.6.0), methods, BiocGenerics, GenomicRanges
-Imports: reticulate, S4Vectors, IRanges, GenomeInfoDb
-Collate: zzz.R
+Depends: R (>= 3.6.0), methods, reticulate, BiocGenerics, GenomicRanges
+Imports: S4Vectors, IRanges, GenomeInfoDb
+SystemRequirements: Python (>= 3.5.3), pandas, pyranges
+Collate: conversions.R zzz.R

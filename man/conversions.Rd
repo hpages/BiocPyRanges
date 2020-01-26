@@ -1,32 +1,15 @@
-\name{BiocPyRanges}
+\name{Bioc-PyRanges-conversions}
 
-\alias{BiocPyRanges}
-
-\alias{pandas}
-\alias{pyranges}
-
+\alias{Bioc-PyRanges-conversions}
+\alias{conversions}
 \alias{makePyRangesFromGRanges}
 \alias{makeGRangesFromPyRanges}
 
-\title{Conveniently access PyRanges functionalities from Bioconductor}
+\title{Convert between GRanges and PyRanges objects}
 
 \description{
-  PyRanges is a Python module for "efficient comparison of genomic
-  intervals in Python".
-
-  \pkg{BiocPyRanges} is an \R package that leverages the power of popular
-  \R/Python interface \pkg{reticulate} to make it convenient to access
-  PyRanges functionalities from Bioconductor.
-  In particular:
-  \itemize{
-    \item It provides two functions to switch back and forth between
-          \link[GenomicRanges]{GRanges} and PyRanges objects.
-    \item For maximum convenience it also defines the \code{pandas} and
-          \code{pyranges} global symbols which are references to the
-	  corresponding Python modules.
-  }
-
-  See below for some examples.
+  Two utility functions for converting back and forth between
+  \link[GenomicRanges]{GRanges} and PyRanges objects.
 }
 
 \usage{
@@ -54,8 +37,15 @@ makeGRangesFromPyRanges(pyr)
 
 \references{
   PyRanges: \url{https://github.com/biocore-NTNU/pyranges}
+}
 
-  reticulate: \url{https://cran.r-project.org/web/packages/reticulate/}
+\seealso{
+  \itemize{
+    \item \link[GenomicRanges]{GRanges} objects defined in
+          the \pkg{GenomicRanges} package.
+
+    \item What is the \pkg{\link{BiocPyRanges}} package about.
+  }
 }
 
 \examples{
