@@ -4,8 +4,8 @@ Description: Provides utilities for converting between GRanges and
 	PyRanges objects.
 Version: 0.0.1
 Encoding: UTF-8
-Author: Hervé Pagès <hpages@fredhutch.org>
-Maintainer: Hervé Pagès <hpages@fredhutch.org>
+Author: Hervé Pagès
+Maintainer: Hervé Pagès <hpages.on.github@gmail.com>
 License: Artistic-2.0
 biocViews: Genetics, Infrastructure, DataRepresentation,
 	Annotation, GenomeAnnotation, Coverage
