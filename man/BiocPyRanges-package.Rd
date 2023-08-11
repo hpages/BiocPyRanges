@@ -27,7 +27,7 @@
     \item For maximum convenience it also defines the \code{pandas} and
           \code{pyranges} global symbols (which are references to the
           corresponding Python modules) as well as utility functions
-          to facilitate installion of these modules. See below.
+          to facilitate installation of these modules. See below.
   }
 }
 

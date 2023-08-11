@@ -2,11 +2,12 @@ Package: BiocPyRanges
 Title: Conveniently access PyRanges functionalities from Bioconductor
 Description: Provides utilities for converting between GRanges and
 	PyRanges objects.
-Version: 0.0.1
+BugReports: https://github.com/hpages/BiocPyRanges/issues
+Version: 0.0.2
+License: Artistic-2.0
 Encoding: UTF-8
 Author: Hervé Pagès
 Maintainer: Hervé Pagès <hpages.on.github@gmail.com>
-License: Artistic-2.0
 biocViews: Genetics, Infrastructure, DataRepresentation,
 	Annotation, GenomeAnnotation, Coverage
 Depends: R (>= 3.6.0), methods, reticulate, BiocGenerics, GenomicRanges

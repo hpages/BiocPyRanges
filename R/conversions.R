@@ -87,6 +87,9 @@
             gr_mcols)
 }
 
+### Return an object of class pyranges.pyranges.PyRanges with
+### pyranges < 0.0.120, and of class pyranges.pyranges_main.PyRanges
+### with pyranges >= 0.0.120.
 makePyRangesFromGRanges <- function(gr)
 {
     df <- .make_PyRanges_data_frame_from_GRanges(gr)
@@ -95,7 +98,8 @@ makePyRangesFromGRanges <- function(gr)
 
 makeGRangesFromPyRanges <- function(pyr)
 {
-    stopifnot(inherits(pyr, "pyranges.pyranges.PyRanges"))
+    stopifnot(inherits(pyr, "pyranges.pyranges.PyRanges") ||
+              inherits(pyr, "pyranges.pyranges_main.PyRanges"))
 
     df <- pyr$as_df()
 

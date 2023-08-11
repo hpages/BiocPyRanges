@@ -1,6 +1,6 @@
 ### Per recommendation of the reticulate folks, we provide convenient
-### wrappers for py_install() to make it easy for the user to install the
-### required Python modules. See:
+### reticulate::py_install() wrappers to make it easy for the user to
+### install the required Python modules. See:
 ### https://cran.r-project.org/web/packages/reticulate/vignettes/package.html
 
 install_pandas <- function(method="auto", conda="auto")
